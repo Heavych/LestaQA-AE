@@ -52,38 +52,37 @@ class Rectangle: # Определение класса для прямоугол
         print(f"Drawing Rectangle at ({self.x}, {self.y}) with width {self.width}, height {self.height} in color {color}")  # Вывод информации о прямоугольнике
 
 
-# Инициализация Pygame
-pygame.init()
-clock = pygame.time.Clock()
+def main(run_game=True):
+    pygame.init()
+    clock = pygame.time.Clock()
 
-# Создание объекта движка с заданными размерами холста
-engine = Engine2D(800, 600)
+    engine = Engine2D(800, 600)
+    circle = Circle(200, 100, 50)
+    triangle = Triangle([(400, 50), (450, 150), (350, 150)])
+    rectangle = Rectangle(550, 50, 100, 100)
 
-# Создание фигур (круга, треугольника и прямоугольника) с заданными параметрами
-circle = Circle(200, 100, 50)
-triangle = Triangle([(400, 50), (450, 150), (350, 150)])
-rectangle = Rectangle(550, 50, 100, 100)
+    engine.add_figure(circle)
+    engine.add_figure(triangle)
+    engine.add_figure(rectangle)
 
-# Добавление фигур на холст движка
-engine.add_figure(circle)
-engine.add_figure(triangle)
-engine.add_figure(rectangle)
+    engine.change_color((26, 115, 232))
+    engine.draw()
 
-# Изменение цвета отрисовки на голубой
-engine.change_color((26, 115, 232))
+    if run_game:
+        running = True
+        while running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
 
-# Отрисовка фигур на холсте и очистка списка фигур
-engine.draw()
+            pygame.display.flip()
+            clock.tick(60)
 
-# Основной игровой цикл Pygame
-running = True
-while running:
-    for event in pygame.event.get():  # Проверка событий Pygame
-        if event.type == pygame.QUIT:  # Если нажата кнопка закрытия окна
-            running = False  # Устанавливаем флаг для выхода из цикла
+        pygame.quit()
+        sys.exit()
+    else:
+        # Если run_game=False (производится тестирование), просто завершаем инициализацию Pygame
+        pygame.quit()
 
-    pygame.display.flip()  # Обновление экрана
-    clock.tick(60)  # Установка FPS (60 кадров в секунду)
-
-pygame.quit()  # Выход из Pygame
-sys.exit()  # Выход из программы
+if __name__ == "__main__":
+    main()

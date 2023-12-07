@@ -1,54 +1,62 @@
+import unittest
 import pygame
 import sys
-import pytest
+
+# Импорт классов из вашего исходного кода
 from engine2d import Engine2D, Circle, Triangle, Rectangle
 
-@pytest.fixture
-def engine():
-    pygame.init()
-    engine = Engine2D(800, 600)
-    yield engine
-    pygame.quit()
+class TestEngine2D(unittest.TestCase):
+    def setUp(self):
+        pygame.init()
+        self.engine = Engine2D(800, 600)
 
-def test_add_figure(engine):
-    assert len(engine.figures) == 0
+    def test_change_color(self):
+        self.engine.change_color((255, 0, 0))
+        self.assertEqual(self.engine.color, (255, 0, 0))
 
-    circle = Circle(100, 100, 50)
-    engine.add_figure(circle)
-    assert len(engine.figures) == 1
-    assert engine.figures[0] == circle
+    def test_add_figure(self):
+        circle = Circle(200, 100, 50)
+        self.engine.add_figure(circle)
+        self.assertIn(circle, self.engine.figures)
 
-def test_change_color(engine):
-    initial_color = engine.color
+    def test_draw(self):
+        circle = Circle(200, 100, 50)
+        triangle = Triangle([(400, 50), (450, 150), (350, 150)])
+        rectangle = Rectangle(550, 50, 100, 100)
+        self.engine.add_figure(circle)
+        self.engine.add_figure(triangle)
+        self.engine.add_figure(rectangle)
 
-    engine.change_color((255, 0, 0))  # Красный цвет
-    assert engine.color != initial_color
-    assert engine.color == (255, 255, 0)
+        self.engine.draw()
+        self.assertEqual(self.engine.figures, [])
 
-def test_draw(engine):
-    circle = Circle(100, 100, 50)
-    triangle = Triangle([(200, 200), (300, 300), (400, 200)])
-    rectangle = Rectangle(400, 400, 100, 50)
+class TestCircle(unittest.TestCase):
+    def setUp(self):
+        self.circle = Circle(200, 100, 50)
 
-    engine.add_figure(circle)
-    engine.add_figure(triangle)
-    engine.add_figure(rectangle)
+    def test_draw(self):
+        mock_canvas = pygame.Surface((800, 600))
+        color = (255, 255, 255)
+        self.circle.draw(mock_canvas, color)  # Проверка, что метод не выбрасывает ошибку
 
+class TestTriangle(unittest.TestCase):
+    def setUp(self):
+        self.triangle = Triangle([(400, 50), (450, 150), (350, 150)])
 
-def test_circle_draw():
-    canvas = pygame.Surface((800, 600))
-    circle = Circle(100, 100, 50)
-    circle.draw(canvas, (255, 0, 0))
+    def test_draw(self):
+        mock_canvas = pygame.Surface((800, 600))
+        color = (255, 255, 255)
+        self.triangle.draw(mock_canvas, color)  # Проверка, что метод не выбрасывает ошибку
 
+class TestRectangle(unittest.TestCase):
+    def setUp(self):
+        self.rectangle = Rectangle(550, 50, 100, 100)
 
-def test_triangle_draw():
-    canvas = pygame.Surface((800, 600))
-    triangle = Triangle([(200, 200), (300, 300), (400, 200)])
-    triangle.draw(canvas, (0, 255, 0))
+    def test_draw(self):
+        mock_canvas = pygame.Surface((800, 600))
+        color = (255, 255, 255)
+        self.rectangle.draw(mock_canvas, color)  # Проверка, что метод не выбрасывает ошибку
 
-
-def test_rectangle_draw():
-    canvas = pygame.Surface((800, 600))
-    rectangle = Rectangle(400, 400, 100, 50)
-    rectangle.draw(canvas, (0, 0, 255))
-
+if __name__ == '__main__':
+    main(run_game=False)  # Запуск без запуска игрового цикла
+    unittest.main()  # Запуск тестов
