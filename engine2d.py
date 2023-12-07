@@ -53,36 +53,37 @@ class Rectangle: # Определение класса для прямоугол
 
 
 def main(run_game=True):
-    pygame.init()
-    clock = pygame.time.Clock()
+    pygame.init()  # Инициализация Pygame для работы с графикой
+    clock = pygame.time.Clock()  # Создание объекта часов для управления FPS (кадры в секунду)
 
-    engine = Engine2D(800, 600)
-    circle = Circle(200, 100, 50)
-    triangle = Triangle([(400, 50), (450, 150), (350, 150)])
-    rectangle = Rectangle(550, 50, 100, 100)
+    engine = Engine2D(800, 600)  # Создание объекта движка с размерами холста 800x600
+    circle = Circle(200, 100, 50)  # Создание объекта круга с координатами (200, 100) и радиусом 50
+    triangle = Triangle([(400, 50), (450, 150), (350, 150)])  # Создание объекта треугольника с заданными координатами точек
+    rectangle = Rectangle(550, 50, 100, 100)  # Создание объекта прямоугольника с заданными координатами и размерами
 
-    engine.add_figure(circle)
-    engine.add_figure(triangle)
-    engine.add_figure(rectangle)
+    engine.add_figure(circle)  # Добавление круга на холст движка
+    engine.add_figure(triangle)  # Добавление треугольника на холст движка
+    engine.add_figure(rectangle)  # Добавление прямоугольника на холст движка
 
-    engine.change_color((26, 115, 232))
-    engine.draw()
+    engine.change_color((26, 115, 232))  # Изменение цвета отрисовки фигур на холсте
 
-    if run_game:
+    engine.draw()  # Отрисовка всех добавленных фигур на холсте
+
+    if run_game:  # Если run_game=True (по умолчанию), запускается игровой цикл Pygame
         running = True
-        while running:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False
+        while running:  # Цикл игры, ожидает события выхода из игры
+            for event in pygame.event.get():  # Проверка событий Pygame
+                if event.type == pygame.QUIT:  # Если происходит событие выхода из игры
+                    running = False  # Установка флага для выхода из цикла
 
-            pygame.display.flip()
-            clock.tick(60)
+            pygame.display.flip()  # Обновление экрана
+            clock.tick(60)  # Установка FPS (60 кадров в секунду)
 
-        pygame.quit()
-        sys.exit()
+        pygame.quit()  # Закрытие Pygame
+        sys.exit()  # Выход из программы
     else:
-        # Если run_game=False (производится тестирование), просто завершаем инициализацию Pygame
-        pygame.quit()
+        # Если run_game=False (исполняется тестирование), завершаем инициализацию Pygame
+        pygame.quit()  # Закрытие Pygame (в случае тестирования)
 
 if __name__ == "__main__":
     main()
